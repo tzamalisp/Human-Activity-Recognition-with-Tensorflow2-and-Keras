@@ -67,11 +67,8 @@ class Predict:
         class_names = self.config.config_namespace.class_names
         print('Classes:', class_names)
         print()
-        # print(self.dataset.test_data)
-        # self.dataset.test_label_one_hot
-        # print(self.dataset.test_labels)
         self.predictions = self.cnn_model.predict(self.dataset.test_data)
-        # print(self.model.predictions.round(2))
+        # print(self.predictions.round(2))
 
         self.scores = self.cnn_model.evaluate(x=self.dataset.test_data,
                                               y=self.dataset.test_label_one_hot,

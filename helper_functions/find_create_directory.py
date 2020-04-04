@@ -19,9 +19,6 @@ class FindDirectory:
 
     def create_directory(self):
         # find dynamically the current script directory
-        # current_directory = os.getcwd()
-        # find the parent directory --> app directory
-        # app_directory = Path(current_directory).parent
         full_path = os.path.join(path_main_app, self.directory)
         # create path directories if not exist --> else return the path
         if not os.path.exists(full_path):
@@ -40,7 +37,6 @@ class LogDirectory:
     @staticmethod
     def log_directory():
         log_dir = 'logs'
-        # curr_dir = Path().absolute()  # current dir
         dir_path = os.path.join(path_main_app, log_dir) + '/'  # main app path + adding the 'logs' directory
         return dir_path
 
@@ -55,7 +51,6 @@ class ExportsDirectory:
     @staticmethod
     def exports_directory():
         exports_dir = 'exports'
-        # curr_dir = Path().absolute()  # current dir
         dir_path = os.path.join(path_main_app, exports_dir) + '/'  # main app path + adding the 'logs' directory
         # create path directories if not exist --> else return the path
         if not os.path.exists(dir_path):
@@ -73,6 +68,5 @@ class NnConfDirectory:
     @staticmethod
     def nn_conf_directory():
         nn_conf_dir = 'nn_configuration_files'
-        # curr_dir = Path().absolute()  # current dir
         dir_path = os.path.join(path_main_app, nn_conf_dir) + '/'  # main app path + adding the 'logs' directory
         return dir_path

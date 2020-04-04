@@ -80,7 +80,6 @@ def main():
 		print('Loading the model..')
 		model = Predict(config, dataset)
 		model.load_model()
-		# model.import_dataset_from_mongodb()
 		if config.config_namespace.evaluate_test == 'true':
 			model.evaluate_model()
 			report = Report(config, model)
