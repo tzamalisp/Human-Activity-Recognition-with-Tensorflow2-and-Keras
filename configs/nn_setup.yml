@@ -1,0 +1,2 @@
+nn_conf_file: har_config.json
+data_folder: UCI HAR Dataset

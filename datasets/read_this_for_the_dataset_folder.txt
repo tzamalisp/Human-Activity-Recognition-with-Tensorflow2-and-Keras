@@ -1,0 +1,1 @@
+Inside the "datasets" folder you must put the folder with the data you want to feed the Neural Network.
