@@ -10,6 +10,8 @@ SCRIPT_DIR = os.path.dirname(os.path.realpath(os.path.join(os.getcwd(), os.path.
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 from nn_base.nn_base_model_har import BaseModel
 
+# Main Application directory
+main_app_path = os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT))
 
 class HarModel(BaseModel):
 
@@ -36,19 +38,24 @@ class HarModel(BaseModel):
         # TODO: two ways of defining
         # 1) intialize an array with all layers(remember there is layer size parameter in JSON) and pass it to Sequential constructor.
         # 2) add the layers to the model through "add" method of Sequential class.
-
+        model_design_name = ''
         if self.config.config_namespace.model_type == 'Sequential':
             print("The Keras ConvNet model type used for this experiment is: ", self.config.config_namespace.model_type)
             self.cnn_model = self.define_sequential_model()
-
+            model_design_name = 'model_design_{}.png'.format(self.config.config_namespace.model_type)
         else:
             # TODO: handle functional model here.
             # self.cnn_model = Model()
             self.define_functional_model()
-
+            model_design_name = 'model_design_{}.png'.format(self.config.config_namespace.model_type)
         # Summary of the ConvNet model.
         print('Summary of the model:')
         self.cnn_model.summary()
+
+
+        # save the model design
+        model_design_path = os.path.join(main_app_path, self.config.config_namespace.image_dir, model_design_name)
+        keras.utils.plot_model(self.cnn_model, model_design_path, show_shapes=True)
         return
 
     def define_sequential_model(self):

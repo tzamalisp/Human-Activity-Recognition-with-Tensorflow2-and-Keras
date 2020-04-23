@@ -9,6 +9,7 @@ import pandas as pd
 from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
 
 # import from other folders
 import sys
@@ -64,6 +65,30 @@ def load_dataset_group(group, prefix=''):
     y = load_file(prefix + group + '/y_'+group+'.txt')
     return X, y
 
+# standardize data
+def scale_data(trainX, testX):
+	# remove overlap
+	cut = int(trainX.shape[1] / 2)
+	longX = trainX[:, -cut:, :]
+	# flatten windows
+	longX = longX.reshape((longX.shape[0] * longX.shape[1], longX.shape[2]))
+	# flatten train and test
+	flatTrainX = trainX.reshape((trainX.shape[0] * trainX.shape[1], trainX.shape[2]))
+	flatTestX = testX.reshape((testX.shape[0] * testX.shape[1], testX.shape[2]))
+	# standardize
+	# if standardize:
+	s = StandardScaler()
+	# fit on training data
+	s.fit(longX)
+	# apply to training and test data
+	longX = s.transform(longX)
+	flatTrainX = s.transform(flatTrainX)
+	flatTestX = s.transform(flatTestX)
+	# reshape
+	flatTrainX = flatTrainX.reshape((trainX.shape))
+	flatTestX = flatTestX.reshape((testX.shape))
+	return flatTrainX, flatTestX
+
 
 class SensorDataLoader(DataLoader):
     def __init__(self, config):
@@ -92,6 +117,11 @@ class SensorDataLoader(DataLoader):
         self.train_data, self.train_labels = load_dataset_group('train', prefix + nn_setup_conf['data_folder'] + '/')
         # load all test
         self.test_data, self.test_labels = load_dataset_group('test', prefix + nn_setup_conf['data_folder'] + '/')
+
+        # data standardization
+        print('Standardizing the data..')
+        self.train_data, self.test_data = scale_data(self.train_data, self.test_data)
+        print('Data standardization completed.')
 
     # plot a histogram of each variable in the dataset
     def plot_variable_distributions(self, data, which_data):
