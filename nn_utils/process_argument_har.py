@@ -45,59 +45,50 @@ def get_args():
 						required = False
 					)
 
-	# Epoch size argument.
+	# Epoch size argument (overrides "num_epochs" of the configuration file).
 	parser.add_argument(
 						'-e', '--epoch',
 						metavar = 'E',
-						help = 'Number of epoches for traning the model',
-						default = 1,
+						type = int,
+						help = 'Number of epochs for training the model (default: num_epochs from the config file)',
+						default = None,
 						required = False
 					)
 
-	# Mode argument (save / load model).
+	# Mode argument (overrides "mode" of the configuration file).
 	parser.add_argument(
 						'-m', '--mode',
 						metavar = 'M',
-						help = 'Save (Train/Validate) or load the model (test/predict)',
-						default = 'save',
+						choices = ['save', 'load'],
+						help = 'save: train/validate and save the model, load: load the model (default: mode from the config file)',
+						default = None,
 						required = False
 					)
 
-	# Test set evaluation (true / false).
+	# Test set evaluation (overrides "evaluate_test" of the configuration file).
 	parser.add_argument(
 						'-t', '--testevaluation',
 						metavar = 'T',
-						help = 'Evaluate test due predictions (Load Mode)',
-						default = 'false',
+						choices = ['true', 'false'],
+						help = 'Evaluate on the test set in load mode: true / false (default: evaluate_test from the config file)',
+						default = None,
 						required = False
 					)
 
 	# Convert to dictonary.
 	args = vars(parser.parse_args())
+	if args['testevaluation'] is not None:
+		args['testevaluation'] = args['testevaluation'] == 'true'
 
 	if args['config'] == path_conf_default:
 		print('Using default configuration file.')
-		with open(path_conf_default) as json_file:
-			data = json.load(json_file)
-		# print('Print NN configuration data:')
-		# pprint(data)
-		print()
 	else:
 		print('Using configurations from file:', args['config'])
 
-	if args['epoch'] == 1:
-		print('Using default epoch size of 1.')
-	else:
-		print('Using epoch size:', args['epoch'])
-
-	if args['mode'] == 'save':
-		print('Using default mode --> save.')
-	else:
-		print('Using mode:', args['mode'])
-
-	if args['testevaluation'] == 'false':
-		print('Using default value for test set evaluation --> false.')
-	else:
-		print('Using test set evaluation:', args['testevaluation'])
+	for key, name in (('epoch', 'epoch size'), ('mode', 'mode'), ('testevaluation', 'test set evaluation')):
+		if args[key] is None:
+			print('Using {} from the configuration file.'.format(name))
+		else:
+			print('Using {} from the command line: {}'.format(name, args[key]))
 
 	return args

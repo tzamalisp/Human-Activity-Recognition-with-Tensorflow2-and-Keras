@@ -154,13 +154,13 @@ class SensorDataLoader(DataLoader):
         # Save the plot to disk.
         if self.config.config_namespace.mode == 'save':
         	dist_file_name = "save_train_val"
-        elif self.config.config_namespace.mode == 'load' and self.config.config_namespace.evaluate_test == 'true':
+        elif self.config.config_namespace.mode == 'load' and self.config.config_namespace.evaluate_test:
         	dist_file_name = "load_test"
-        elif self.config.config_namespace.mode == 'load' and self.config.config_namespace.evaluate_test == 'false':
-        	dist_file_name = "load_pred.png"
+        elif self.config.config_namespace.mode == 'load' and not self.config.config_namespace.evaluate_test:
+        	dist_file_name = "load_pred"
 
         sensor_data_dist_path = os.path.join(main_app_path, self.config.config_namespace.graph_dir, "{}_sensor_{}_values_distributions.png".format(dist_file_name, which_data))
-        if(self.config.config_namespace.save_plots == 'true'):
+        if(self.config.config_namespace.save_plots):
             plt.savefig(sensor_data_dist_path, bbox_inches='tight')
             print('Sensor {} plot distributions saved successfully.'.format(which_data))
         else:

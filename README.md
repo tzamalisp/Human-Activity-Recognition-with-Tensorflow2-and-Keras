@@ -28,9 +28,11 @@ Optional:
 ### Run
 
 ```bash
-python nn_mains/har_main.py -e 50                 # train, evaluate and save the model (.keras)
+python nn_mains/har_main.py                       # train, evaluate and save the model (.keras)
 python nn_mains/har_main.py -m load -t true       # load the saved model and evaluate on the test set
 ```
+
+All settings come from `nn_configuration_files/har_config.json`. The command line options `-e/--epoch`, `-m/--mode` (`save`/`load`) and `-t/--testevaluation` (`true`/`false`) override `num_epochs`, `mode` and `evaluate_test` only when given; `-c/--config` selects another configuration file.
 
 Models are saved in the native Keras format (`nn_experiments/<exp_name>/saved_models/<exp_name>_model.keras`).
 Models saved as `.h5` with older TensorFlow versions must be retrained.

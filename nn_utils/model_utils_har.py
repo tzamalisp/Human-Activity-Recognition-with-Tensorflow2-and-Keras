@@ -83,14 +83,14 @@ class Report():
 		# Save the plot to disk.
 		if self.config.config_namespace.mode == 'save':
 			loss_file_name = "save_train_val_loss.png"
-		elif self.config.config_namespace.mode == 'load' and self.config.config_namespace.evaluate_test == 'true':
+		elif self.config.config_namespace.mode == 'load' and self.config.config_namespace.evaluate_test:
 			loss_file_name = "load_test_loss.png"
-		elif self.config.config_namespace.mode == 'load' and self.config.config_namespace.evaluate_test == 'false':
+		elif self.config.config_namespace.mode == 'load' and not self.config.config_namespace.evaluate_test:
 			loss_file_name = "load_pred_loss.png"
 
 		loss_path = os.path.join(main_app_path, self.config.config_namespace.graph_dir, loss_file_name)
 
-		if(self.config.config_namespace.save_plots == 'true'):
+		if(self.config.config_namespace.save_plots):
 			plt.savefig(loss_path, bbox_inches='tight')
 		else:
 			plt.show()
@@ -121,13 +121,13 @@ class Report():
 		# Save the plot to disk.
 		if self.config.config_namespace.mode == 'save':
 			acc_file_name = "save_train_val_accuracy.png"
-		elif self.config.config_namespace.mode == 'load' and self.config.config_namespace.evaluate_test == 'true':
+		elif self.config.config_namespace.mode == 'load' and self.config.config_namespace.evaluate_test:
 			acc_file_name = "load_test_accuracy.png"
-		elif self.config.config_namespace.mode == 'load' and self.config.config_namespace.evaluate_test == 'false':
+		elif self.config.config_namespace.mode == 'load' and not self.config.config_namespace.evaluate_test:
 			acc_file_name = "load_pred_accuracy.png"
 
 		acc_path = os.path.join(main_app_path, self.config.config_namespace.graph_dir, acc_file_name)
-		if(self.config.config_namespace.save_plots == 'true'):
+		if(self.config.config_namespace.save_plots):
 			plt.savefig(acc_path, bbox_inches='tight')
 		else:
 			plt.show()
@@ -160,9 +160,9 @@ class Report():
 		# Save the Classification Report to disk.
 		if self.config.config_namespace.mode == 'save':
 			cr_file_name = "save_train_val_class_report.txt"
-		elif self.config.config_namespace.mode == 'load' and self.config.config_namespace.evaluate_test == 'true':
+		elif self.config.config_namespace.mode == 'load' and self.config.config_namespace.evaluate_test:
 			cr_file_name = "load_test_class_report.txt"
-		elif self.config.config_namespace.mode == 'load' and self.config.config_namespace.evaluate_test == 'false':
+		elif self.config.config_namespace.mode == 'load' and not self.config.config_namespace.evaluate_test:
 			cr_file_name = "load_pred_class_report.txt"
 
 		if self.config.config_namespace.validation_split == True:
@@ -241,14 +241,14 @@ class Report():
 		# Save the plot to disk.
 		if self.config.config_namespace.mode == 'save':
 			cm_file_name = "save_train_val_confusion_matrix.png"
-		elif self.config.config_namespace.mode == 'load' and self.config.config_namespace.evaluate_test == 'true':
+		elif self.config.config_namespace.mode == 'load' and self.config.config_namespace.evaluate_test:
 			cm_file_name = "load_test_confusion_matrix.png"
-		elif self.config.config_namespace.mode == 'load' and self.config.config_namespace.evaluate_test == 'false':
+		elif self.config.config_namespace.mode == 'load' and not self.config.config_namespace.evaluate_test:
 			cm_file_name = "load_pred_confusion_matrix.png"
 
 		cm_path = os.path.join(main_app_path, self.config.config_namespace.graph_dir, cm_file_name)
 
-		if(self.config.config_namespace.save_plots == 'true'):
+		if(self.config.config_namespace.save_plots):
 			plt.savefig(cm_path, bbox_inches='tight')
 		else:
 			plt.show()

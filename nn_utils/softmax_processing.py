@@ -53,9 +53,9 @@ class SoftmaxResults:
 
             if self.config.config_namespace.mode == 'save':
             	df_file_name = "save_train_val_softmax_exports.csv"
-            elif self.config.config_namespace.mode == 'load' and self.config.config_namespace.evaluate_test == 'true':
+            elif self.config.config_namespace.mode == 'load' and self.config.config_namespace.evaluate_test:
             	df_file_name = "load_test_softmax_exports.csv"
-            elif self.config.config_namespace.mode == 'load' and self.config.config_namespace.evaluate_test == 'false':
+            elif self.config.config_namespace.mode == 'load' and not self.config.config_namespace.evaluate_test:
             	df_file_name = "load_pred_softmax_exports.csv"
 
             df_path = os.path.join(main_app_path, self.config.config_namespace.df_dir, df_file_name)

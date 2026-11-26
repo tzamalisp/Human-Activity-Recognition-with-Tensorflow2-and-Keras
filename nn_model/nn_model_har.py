@@ -224,7 +224,7 @@ class HarModel(BaseModel):
 
         if self.config.config_namespace.validation_split == True:
             print('Training phase uses "validation_plit" parameter with a ratio retrieved from the configuration file."')
-            if (self.config.config_namespace.save_model == "true"):
+            if (self.config.config_namespace.save_model):
                 print("Training phase under progress, trained ConvNet model will be saved at path", self.saved_model_path,
                       " ...\n")
                 self.history = self.cnn_model.fit(x=self.dataset.train_data,
@@ -248,7 +248,7 @@ class HarModel(BaseModel):
 
         elif self.config.config_namespace.validation_split == False:
             print('Training phase uses "validation_data" parameter, and handles the test data."')
-            if (self.config.config_namespace.save_model == "true"):
+            if (self.config.config_namespace.save_model):
                 print("Training phase under progress, trained ConvNet model will be saved at path", self.saved_model_path,
                       " ...\n")
                 self.history = self.cnn_model.fit(x=self.dataset.train_data,
