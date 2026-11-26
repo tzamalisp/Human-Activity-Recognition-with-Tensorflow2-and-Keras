@@ -21,8 +21,11 @@ source .venv/bin/activate
 pip install -r requirements.txt          # or: pip install -r requirements.lock (exact tested versions)
 ```
 
+> **Note:** since TensorFlow 2.21, TensorBoard is no longer installed together with TensorFlow (versions 2.18 - 2.20 still installed it). This project does not need it; if you want to use it, install it separately with `pip install tensorboard`.
+
 Optional:
 * `pip install tensorflow-metal` for GPU acceleration on Apple Silicon.
+* `pip install tensorboard` to visualize training logs.
 * `brew install graphviz` (or `apt install graphviz`) to export the model design diagram; without it the export is skipped.
 
 ### Run

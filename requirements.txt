@@ -1,5 +1,9 @@
 # Python 3.10 - 3.12 recommended (TensorFlow wheels).
-# TensorFlow installs Keras 3. TensorBoard is not used by this project (no longer a TF dependency since 2.21).
+#
+# TensorFlow installs Keras 3 as a dependency.
+# Note: since TensorFlow 2.21, TensorBoard is NOT installed with TensorFlow anymore
+# (TF 2.18 - 2.20 still pulled it in). This project does not use TensorBoard;
+# to inspect training logs with it, install it separately (uncomment below).
 tensorflow>=2.18,<3
 numpy>=1.26
 pandas>=2.2
@@ -9,3 +13,4 @@ matplotlib>=3.8
 seaborn>=0.13
 scipy>=1.11
 pydot>=2.0
+# tensorboard>=2.18   # optional
