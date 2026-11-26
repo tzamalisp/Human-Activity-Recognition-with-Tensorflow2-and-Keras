@@ -36,17 +36,16 @@ pprint(nn_setup_conf)
 def main():
 	print('Time of NN train execution: {}'.format(datetime.now()))
 	print()
+	# Capture the command line arguments from the interface script.
+	# Invalid arguments are reported by argparse, which exits with code 2.
+	args = get_args()
+
+	# Parse the configuration parameters for the ConvNet Model.
 	try:
-
-		# Capture the command line arguments from the interface script.
-		args = get_args()
-
-		# Parse the configuration parameters for the ConvNet Model.
 		config = ConfigurationParameters(args)
-
-	except:
-		print('Missing or invalid arguments!')
-		exit(0)
+	except (OSError, ValueError, TypeError) as err:
+		print('Invalid configuration file {}: {}'.format(args['config'], err))
+		sys.exit(1)
 
 	# check the libraries compatibility
 	if config.config_namespace.libraries_checker == True:
