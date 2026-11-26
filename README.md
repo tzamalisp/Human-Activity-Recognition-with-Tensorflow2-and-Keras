@@ -58,6 +58,46 @@ The dataset is not covered by this repository's license. Its authors require tha
 
 The dataset is distributed AS-IS and commercial use is prohibited.
 
+## Results
+
+Results of the `har` experiment (`nn_configuration_files/har_config.json`), trained with TensorFlow 2.21 / Keras 3.15 on the raw inertial signals (9 channels × 128 timesteps per window). All outputs are in [`nn_experiments/har/`](nn_experiments/har).
+
+| Metric | Value |
+|---|---|
+| **Test accuracy** | **92.33%** (2,947 windows) |
+| Test loss | 0.238 |
+| Best validation accuracy | 93.61% (epoch 31) |
+| Training stopped at | epoch 41 of 50 (early stopping, patience 10) |
+| Parameters | 121,298 (119,050 trainable) |
+
+### Model
+
+Three `Conv1D` blocks (64 filters, kernel 3) followed by `LeakyReLU` (slope 0.1), `MaxPooling1D`, `Dropout` (0.5) and `BatchNormalization`, then `Flatten` → `Dense(100)` + `LeakyReLU` → `Dense(6, softmax)`. The convolutional and hidden dense layers use a `linear` activation, so the non-linearity comes from the `LeakyReLU` layers.
+
+Training: Adam, categorical cross-entropy, batch size 32, 10% of the training set held out for validation. `ModelCheckpoint` and `EarlyStopping` both monitor `val_accuracy`, so the evaluated model is the saved one. The random seed is fixed, so the run is reproducible.
+
+![Model design](nn_experiments/har/images/model_design_Sequential.png)
+
+### Per-class results (test set)
+
+| Activity | Precision | Recall | F1-score | Support |
+|---|---|---|---|---|
+| WALKING | 0.99 | 0.99 | 0.99 | 496 |
+| WALKING_UPSTAIRS | 0.98 | 0.95 | 0.97 | 471 |
+| WALKING_DOWNSTAIRS | 0.98 | 0.98 | 0.98 | 420 |
+| SITTING | 0.80 | 0.79 | 0.79 | 491 |
+| STANDING | 0.81 | 0.84 | 0.83 | 532 |
+| LAYING | 1.00 | 1.00 | 1.00 | 537 |
+| **Macro average** | **0.93** | **0.92** | **0.93** | 2,947 |
+
+The dynamic activities and LAYING are recognised almost perfectly. Most errors are between **SITTING and STANDING** (103 SITTING windows predicted as STANDING and 85 the other way round), two static postures that look very similar in the accelerometer and gyroscope signals.
+
+| Confusion matrix | Accuracy | Loss |
+|---|---|---|
+| ![Confusion matrix](nn_experiments/har/graphs/save_train_val_confusion_matrix.png) | ![Accuracy](nn_experiments/har/graphs/save_train_val_accuracy.png) | ![Loss](nn_experiments/har/graphs/save_train_val_loss.png) |
+
+The full classification report and the per-window softmax probabilities are in [`class_reports/`](nn_experiments/har/class_reports) and [`dataframes/`](nn_experiments/har/dataframes).
+
 ## Related Work
 
 The Object-Oriented Programming design is deployed for the implementation of this project. It is also based on the following related works, but it extends them in the Neural Network Design and the functionalities that previous authors implemented:
