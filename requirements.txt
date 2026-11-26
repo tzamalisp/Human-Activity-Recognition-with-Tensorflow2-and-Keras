@@ -1,5 +1,5 @@
 # Python 3.10 - 3.12 recommended (TensorFlow wheels).
-# TensorFlow ships TensorBoard and Keras 3 as dependencies.
+# TensorFlow installs Keras 3. TensorBoard is not used by this project (no longer a TF dependency since 2.21).
 tensorflow>=2.18,<3
 numpy>=1.26
 pandas>=2.2
