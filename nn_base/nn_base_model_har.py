@@ -33,11 +33,11 @@ class BaseModel():
 
         # Saved model path.
         model_prefix = self.config.config_namespace.exp_name
-        self.saved_model_path = os.path.join(main_app_path, self.config.config_namespace.saved_model_dir, "{}_model.h5".format(model_prefix))
+        self.saved_model_path = os.path.join(main_app_path, self.config.config_namespace.saved_model_dir, "{}_model.keras".format(model_prefix))
 
         # Checkpoint for ConvNet model.
         self.checkpoint = keras.callbacks.ModelCheckpoint(self.saved_model_path,
-                                                          monitor='val_acc',
+                                                          monitor='val_accuracy',
                                                           verbose=self.config.config_namespace.checkpoint_verbose,
                                                           save_best_only=True,
                                                           mode='max'
@@ -172,7 +172,7 @@ class BaseModel():
 
     def save_model(self):
         """
-        Saves the ConvNet model to disk in h5 format.
+        Saves the ConvNet model to disk in the native Keras (.keras) format.
         :param none
         :return none
         """
@@ -197,7 +197,7 @@ class BaseModel():
 
             raise Exception("ConvNet model not configured and trained !")
 
-        self.cnn_model.load_weights(self.saved_model_path)
+        self.cnn_model = keras.models.load_model(self.saved_model_path)
         print("ConvNet model loaded from the path: ", self.saved_model_path, "\n")
 
         return

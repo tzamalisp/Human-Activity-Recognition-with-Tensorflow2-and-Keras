@@ -11,6 +11,32 @@ The project uses the famous *Human Activity Recognition Dataset*. Please, read t
 
 ## Setup
 
+### Environment
+
+Requires Python 3.10 - 3.12 and TensorFlow 2.18+ (Keras 3).
+
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt          # or: pip install -r requirements.lock (exact tested versions)
+```
+
+Optional:
+* `pip install tensorflow-metal` for GPU acceleration on Apple Silicon.
+* `brew install graphviz` (or `apt install graphviz`) to export the model design diagram; without it the export is skipped.
+
+### Run
+
+```bash
+python nn_mains/har_main.py -e 50                 # train, evaluate and save the model (.keras)
+python nn_mains/har_main.py -m load -t true       # load the saved model and evaluate on the test set
+```
+
+Models are saved in the native Keras format (`nn_experiments/<exp_name>/saved_models/<exp_name>_model.keras`).
+Models saved as `.h5` with older TensorFlow versions must be retrained.
+
+### Dataset
+
 Download the file you can find in the [Resources](#Resources) section, unzip the file and put the folder inside the datasets folder. If you want to change its default name, please update the `data_folder` value inside the `nn_setup.yml` file where the NN reads the data for processing.
 
 ## Related Work

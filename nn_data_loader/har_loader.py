@@ -33,7 +33,7 @@ def load_file(filepath):
     datasets_dir = 'datasets'
     # curr_dir = Path().absolute()  # current dir
     filepath = os.path.join(main_app_path, datasets_dir, filepath)
-    dataframe = read_csv(filepath, header=None, delim_whitespace=True)
+    dataframe = read_csv(filepath, header=None, sep=r"\s+")
     # print(dataframe.head())
     return dataframe.values
 
