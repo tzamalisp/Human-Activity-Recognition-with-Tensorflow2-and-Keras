@@ -74,6 +74,16 @@ class HarModel(BaseModel):
         print('n_timesteps: {}'.format(n_timesteps))
         print('n_features: {}'.format(n_features))
 
+        # The hidden layers get their non-linearity from the LeakyReLU layers when "leaky_relu" is true,
+        # so their own activation should be "linear" (a "relu" before LeakyReLU would cancel it).
+        # Without LeakyReLU, a "linear" activation would make these layers purely linear.
+        hidden_activations = (self.config.config_namespace.oned_conv_activation_l1,
+                              self.config.config_namespace.oned_conv_activation_l2,
+                              self.config.config_namespace.oned_dense_activation_l1)
+        if self.config.config_namespace.leaky_relu != True and 'linear' in hidden_activations:
+            print('Warning: "leaky_relu" is false and a hidden layer activation is "linear"; '
+                  'set the activations to "relu" (or enable "leaky_relu") to keep the network non-linear.')
+
         # define the Neural Network Layers
         self.cnn_model = keras.models.Sequential()
 
@@ -83,7 +93,7 @@ class HarModel(BaseModel):
         # Conv1D layer --> 01
         self.cnn_model.add(keras.layers.Conv1D(filters=self.config.config_namespace.oned_no_of_filters_l1,  # filters = 64
                                             kernel_size=self.config.config_namespace.oned_kernel_row,  # kernel_size = 3
-                                            activation=self.config.config_namespace.oned_conv_activation_l1,  # activation = 'relu'
+                                            activation=self.config.config_namespace.oned_conv_activation_l1,  # activation = 'linear' (non-linearity from LeakyReLU)
                                             padding=self.config.config_namespace.oned_padding,  # oned_padding = 'valid' --> default
                                             strides=self.config.config_namespace.oned_stride_size  # strides = 1 --> default
                                             )
@@ -110,7 +120,7 @@ class HarModel(BaseModel):
         # Conv1D layer  --> 02
         self.cnn_model.add(keras.layers.Conv1D(filters=self.config.config_namespace.oned_no_of_filters_l2,  # filters = 64
                                             kernel_size=self.config.config_namespace.oned_kernel_row,  # kernel_size = 3
-                                            activation=self.config.config_namespace.oned_conv_activation_l2,  # activation = 'relu'
+                                            activation=self.config.config_namespace.oned_conv_activation_l2,  # activation = 'linear' (non-linearity from LeakyReLU)
                                             padding=self.config.config_namespace.oned_padding,  # oned_padding = 'valid' --> default
                                             strides=self.config.config_namespace.oned_stride_size  # strides = 1 --> default
                                             )
@@ -136,7 +146,7 @@ class HarModel(BaseModel):
         # Conv1D layer  --> 02
         self.cnn_model.add(keras.layers.Conv1D(filters=self.config.config_namespace.oned_no_of_filters_l2,  # filters = 64
                                             kernel_size=self.config.config_namespace.oned_kernel_row,  # kernel_size = 3
-                                            activation=self.config.config_namespace.oned_conv_activation_l2,  # activation = 'relu'
+                                            activation=self.config.config_namespace.oned_conv_activation_l2,  # activation = 'linear' (non-linearity from LeakyReLU)
                                             padding=self.config.config_namespace.oned_padding,  # oned_padding = 'valid' --> default
                                             strides=self.config.config_namespace.oned_stride_size  # strides = 1 --> default
                                             )
@@ -164,7 +174,7 @@ class HarModel(BaseModel):
 
         # Dense layer --> 01
         self.cnn_model.add(keras.layers.Dense(units=self.config.config_namespace.oned_no_of_units_l1,  # units = 100
-                                 activation=self.config.config_namespace.oned_dense_activation_l1  # activation = "relu"
+                                 activation=self.config.config_namespace.oned_dense_activation_l1  # activation = 'linear' (non-linearity from LeakyReLU)
                                  )
                            )
 

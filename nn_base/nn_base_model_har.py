@@ -43,8 +43,12 @@ class BaseModel():
                                                           mode='max'
                                                           )
 
-        # Callback - Early stopping for the ConvNet Model with patience set to X from the config file
-        self.early_stopping = keras.callbacks.EarlyStopping(patience=self.config.config_namespace.patience,
+        # Callback - Early stopping for the ConvNet Model with patience set to X from the config file.
+        # It monitors the same metric as the checkpoint, so the restored (evaluated) weights
+        # are the same as the saved model.
+        self.early_stopping = keras.callbacks.EarlyStopping(monitor='val_accuracy',
+                                                        mode='max',
+                                                        patience=self.config.config_namespace.patience,
                                                         restore_best_weights=True
                                                         )
 
