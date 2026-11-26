@@ -4,13 +4,9 @@ Execution Flow for the PAT experiment.
 """
 from datetime import datetime
 from pprint import pprint
-# Reproduce results by seed-ing the random number generator.
-from numpy.random import seed
-seed(1)
-# from tensorflow import set_random_seed
-# set_random_seed(2)
+# Reproduce results by seeding Python, NumPy and TensorFlow RNGs.
 import tensorflow as tf
-tf.random.set_seed(2)
+tf.keras.utils.set_random_seed(1)
 
 # import scripts from other folders
 import os

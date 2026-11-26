@@ -21,5 +21,5 @@ class ReadYml:
         path = app_dir.create_directory()
         # load data analysis yml data
         with open(path + '/' + self.yml_file_name) as yml_file:
-            yml_data = yaml.load(yml_file, Loader=yaml.FullLoader)
+            yml_data = yaml.safe_load(yml_file)
         return yml_data

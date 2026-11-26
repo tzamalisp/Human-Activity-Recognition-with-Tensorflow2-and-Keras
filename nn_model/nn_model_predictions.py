@@ -4,8 +4,6 @@ from tensorflow import keras
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from pymongo import MongoClient
-from bson.objectid import ObjectId
 # import scripts from other folders
 import os
 import sys
@@ -31,7 +29,7 @@ class Predict:
 
         # Saved model path.
         model_prefix = self.config.config_namespace.exp_name
-        self.saved_model_path = os.path.join(main_app_path, self.config.config_namespace.saved_model_dir, "{}_model.h5".format(model_prefix))
+        self.saved_model_path = os.path.join(main_app_path, self.config.config_namespace.saved_model_dir, "{}_model.keras".format(model_prefix))
 
         # Evaluation scores.
         self.scores = []
@@ -48,7 +46,6 @@ class Predict:
         """
         if os.path.exists(self.saved_model_path):
             self.cnn_model = keras.models.load_model(self.saved_model_path)
-            self.cnn_model.load_weights(self.saved_model_path)
             print("ConvNet model loaded from the path: ", self.saved_model_path, "\n")
 
         elif self.cnn_model is None:

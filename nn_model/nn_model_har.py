@@ -55,7 +55,11 @@ class HarModel(BaseModel):
 
         # save the model design
         model_design_path = os.path.join(main_app_path, self.config.config_namespace.image_dir, model_design_name)
-        keras.utils.plot_model(self.cnn_model, model_design_path, show_shapes=True)
+        # plot_model needs pydot and the Graphviz system binary ("brew install graphviz").
+        try:
+            keras.utils.plot_model(self.cnn_model, model_design_path, show_shapes=True)
+        except ImportError as err:
+            print('Skipping model design export (install Graphviz to enable it): {}'.format(err))
         return
 
     def define_sequential_model(self):
@@ -71,13 +75,15 @@ class HarModel(BaseModel):
         print('n_features: {}'.format(n_features))
 
         # define the Neural Network Layers
-        self.cnn_model = tf.keras.models.Sequential()
+        self.cnn_model = keras.models.Sequential()
 
-        # Conv1D layer - Input layer --> 01
+        # Input layer: (n_timesteps, n_features) --> (128, 9)
+        self.cnn_model.add(keras.Input(shape=(n_timesteps, n_features)))
+
+        # Conv1D layer --> 01
         self.cnn_model.add(keras.layers.Conv1D(filters=self.config.config_namespace.oned_no_of_filters_l1,  # filters = 64
                                             kernel_size=self.config.config_namespace.oned_kernel_row,  # kernel_size = 3
                                             activation=self.config.config_namespace.oned_conv_activation_l1,  # activation = 'relu'
-                                            input_shape=(n_timesteps, n_features),  # n_timesteps = 128, n_features = 9
                                             padding=self.config.config_namespace.oned_padding,  # oned_padding = 'valid' --> default
                                             strides=self.config.config_namespace.oned_stride_size  # strides = 1 --> default
                                             )
@@ -85,7 +91,7 @@ class HarModel(BaseModel):
 
         # Leaky ReLu Layer --> 01
         if self.config.config_namespace.leaky_relu == True:
-            self.cnn_model.add(keras.layers.LeakyReLU(alpha=self.config.config_namespace.relu_alpha))
+            self.cnn_model.add(keras.layers.LeakyReLU(negative_slope=self.config.config_namespace.relu_alpha))
 
         # MaxPooling1D layer --> 01
         self.cnn_model.add(keras.layers.MaxPooling1D(pool_size=self.config.config_namespace.oned_pool_size_row, # pool_size = 2
@@ -111,7 +117,7 @@ class HarModel(BaseModel):
                                         )
         # Leaky ReLu Layer --> 01
         if self.config.config_namespace.leaky_relu == True:
-            self.cnn_model.add(keras.layers.LeakyReLU(alpha=self.config.config_namespace.relu_alpha))
+            self.cnn_model.add(keras.layers.LeakyReLU(negative_slope=self.config.config_namespace.relu_alpha))
 
         # MaxPooling1D layer --> 01
         self.cnn_model.add(keras.layers.MaxPooling1D(pool_size=self.config.config_namespace.oned_pool_size_row, # pool_size = 2
@@ -137,7 +143,7 @@ class HarModel(BaseModel):
                                         )
         # Leaky ReLu Layer --> 01
         if self.config.config_namespace.leaky_relu == True:
-            self.cnn_model.add(keras.layers.LeakyReLU(alpha=self.config.config_namespace.relu_alpha))
+            self.cnn_model.add(keras.layers.LeakyReLU(negative_slope=self.config.config_namespace.relu_alpha))
 
         # MaxPooling1D layer --> 01
         self.cnn_model.add(keras.layers.MaxPooling1D(pool_size=self.config.config_namespace.oned_pool_size_row, # pool_size = 2
@@ -164,7 +170,7 @@ class HarModel(BaseModel):
 
         # Leaky ReLu Layer --> 01
         if self.config.config_namespace.leaky_relu == True:
-            self.cnn_model.add(keras.layers.LeakyReLU(alpha=self.config.config_namespace.relu_alpha))
+            self.cnn_model.add(keras.layers.LeakyReLU(negative_slope=self.config.config_namespace.relu_alpha))
 
         # Dropout layer --> 01
         if self.config.config_namespace.dropout == True:
@@ -249,7 +255,7 @@ class HarModel(BaseModel):
                                                   y=self.dataset.train_label_one_hot,
                                                   batch_size=self.config.config_namespace.batch_size,
                                                   epochs=self.config.config_namespace.num_epochs,
-                                                  callbacks=self.callbacks_list,
+                                                  callbacks=self.callbacks_list_sm,
                                                   verbose=self.config.config_namespace.fit_verbose,
                                                   validation_data=(self.dataset.test_data, self.dataset.test_label_one_hot)
                                                   )

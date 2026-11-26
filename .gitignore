@@ -107,3 +107,6 @@ nn_mains/experiments/
 nn_utils/.ipynb_checkpoints/
 
 mongo_data_loader/__pycache__/
+
+.venv/
+__pycache__/

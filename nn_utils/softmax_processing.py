@@ -28,6 +28,7 @@ class SoftmaxResults:
         """
         # predictions = self.model(self.dataset.test_data, training=False)
         # we get the logits and iterate over the predictions
+        rows = []
         for i, logits in enumerate(self.model.predictions):
             # get the probabilities from the logits, from the softmax layer.
             p = logits
@@ -42,10 +43,12 @@ class SoftmaxResults:
             df = pandas.DataFrame([p], columns=self.config.config_namespace.class_names)
             # add a column to the df with the class name (classification result)
             df['CLASS'] = self.config.config_namespace.class_names[index]
-            # append the row to the final DataFrame
-            self.df = self.df.append(df)
+            # collect the row (DataFrame.append was removed in pandas 2.0)
+            rows.append(df)
+        self.df = pandas.concat(rows, ignore_index=True)
         # create a new column with the max value of the DataFrame (efficient)
-        self.df['ARGMAX'] = self.df.max(axis=1)
+        # (only over the probability columns: pandas 2 no longer silently skips the string CLASS column)
+        self.df['ARGMAX'] = self.df[self.config.config_namespace.class_names].max(axis=1)
         if self.df.isnull().values.any() == False and self.df.isna().values.any() == False:
 
             if self.config.config_namespace.mode == 'save':

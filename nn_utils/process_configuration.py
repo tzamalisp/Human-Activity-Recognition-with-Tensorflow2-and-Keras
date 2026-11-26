@@ -6,7 +6,7 @@ These files are located in configaration_files folder.
 """
 import json
 import os
-from bunch import Bunch
+from types import SimpleNamespace
 # Main Application directory
 PACKAGE_PARENT = '..'
 SCRIPT_DIR = os.path.dirname(os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__))))
@@ -31,8 +31,8 @@ class ConfigurationParameters:
 		with open(json_file, 'r') as config_file:
 			self.config_dictionary = json.load(config_file)
 
-		# Convert the dictionary to a namespace using bunch library.
-		self.config_namespace = Bunch(self.config_dictionary)
+		# Convert the dictionary to an attribute-access namespace.
+		self.config_namespace = SimpleNamespace(**self.config_dictionary)
 
 		# Update the command line arguments in the configuration namespace.
 		self.update_namespace()
