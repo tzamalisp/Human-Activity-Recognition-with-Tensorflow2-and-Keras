@@ -4,6 +4,9 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    # Only raise a requirement when its range no longer allows the latest version
+    # (e.g. a new major release). Security updates are still opened regardless.
+    versioning-strategy: "increase-if-necessary"
     groups:
       python-dependencies:
         patterns:

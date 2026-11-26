@@ -51,16 +51,14 @@ class ConfigurationParameters:
 		:raises none
 		"""
 
-		# Update epoch size.
-		if 'epoch' in self.args.keys():
+		# Command line values override the configuration file only when they are given.
+		if self.args.get('epoch') is not None:
 			self.config_namespace.num_epochs = int(self.args['epoch'])
 
-		# Update mode (save/load).
-		if 'mode' in self.args.keys():
+		if self.args.get('mode') is not None:
 			self.config_namespace.mode = self.args['mode']
 
-		# Update mode (save/load).
-		if 'testevaluation' in self.args.keys():
+		if self.args.get('testevaluation') is not None:
 			self.config_namespace.evaluate_test = self.args['testevaluation']
 
 		return

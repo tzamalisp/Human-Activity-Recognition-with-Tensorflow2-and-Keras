@@ -76,7 +76,7 @@ def main():
 		print('Loading the model..')
 		model = Predict(config, dataset)
 		model.load_model()
-		if config.config_namespace.evaluate_test == 'true':
+		if config.config_namespace.evaluate_test:
 			model.evaluate_model()
 			report = Report(config, model)
 			report.model_classification_report()
