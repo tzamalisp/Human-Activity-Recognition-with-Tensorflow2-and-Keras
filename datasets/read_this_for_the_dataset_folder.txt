@@ -1,1 +1,12 @@
-Inside the "datasets" folder you must put the folder with the data you want to feed the Neural Network.
+This folder holds the datasets fed to the Neural Network. Its contents are not tracked by git.
+
+The UCI HAR Dataset is downloaded automatically on the first training run
+(auto_download: true in configs/nn_setup.yml), or manually with:
+
+    python helper_functions/download_dataset.py
+
+Expected layout: datasets/UCI HAR Dataset/{train,test}/...
+The folder name must match `data_folder` in configs/nn_setup.yml.
+
+Dataset license: use in publications must cite Anguita et al., ESANN 2013 (see README.md).
+Commercial use of the dataset is prohibited.

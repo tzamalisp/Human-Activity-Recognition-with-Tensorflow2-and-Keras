@@ -20,6 +20,7 @@ sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 from nn_base.nn_base_data_loader import DataLoader
 from nn_utils.process_argument_har import get_args
 from helper_functions.read_yaml import ReadYml
+from helper_functions.download_dataset import ensure_dataset, dataset_is_present
 
 # Main Application directory
 main_app_path = os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT))
@@ -113,6 +114,15 @@ class SensorDataLoader(DataLoader):
         :return none
         :raises none
         """
+        # make sure the dataset is available locally
+        if not dataset_is_present(nn_setup_conf['data_folder']):
+            if nn_setup_conf.get('auto_download', False):
+                ensure_dataset(nn_setup_conf['data_folder'])
+            else:
+                raise FileNotFoundError(
+                    'Dataset not found in datasets/{}. Run "python helper_functions/download_dataset.py" '
+                    'or set auto_download: true in configs/nn_setup.yml.'.format(nn_setup_conf['data_folder']))
+
         # load all train
         self.train_data, self.train_labels = load_dataset_group('train', prefix + nn_setup_conf['data_folder'] + '/')
         # load all test

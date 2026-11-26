@@ -1,2 +1,5 @@
 nn_conf_file: har_config.json
+# Folder under datasets/ that holds the UCI HAR Dataset.
 data_folder: UCI HAR Dataset
+# Download the dataset automatically if it is missing (see helper_functions/download_dataset.py).
+auto_download: true
