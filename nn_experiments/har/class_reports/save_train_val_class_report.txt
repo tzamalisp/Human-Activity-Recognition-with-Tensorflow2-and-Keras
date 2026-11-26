@@ -1,16 +1,16 @@
 Classification Report:
-Time exported: 2020-04-23 18:11:12.155039
+Time exported: 2026-11-26 10:54:47.246191
 Validation method: Validation split on Train data --> Evaluate on Test
 ------------------------------------------------------------------
               precision    recall  f1-score   support
 
-     Class 0       0.97      1.00      0.98       496
-     Class 1       1.00      0.95      0.97       471
-     Class 2       0.95      0.96      0.95       420
-     Class 3       0.78      0.78      0.78       491
-     Class 4       0.81      0.80      0.80       532
-     Class 5       0.99      1.00      0.99       537
+     Class 0       1.00      0.97      0.98       496
+     Class 1       0.98      0.88      0.93       471
+     Class 2       1.00      0.91      0.95       420
+     Class 3       0.73      0.84      0.78       491
+     Class 4       0.80      0.83      0.82       532
+     Class 5       1.00      1.00      1.00       537
 
     accuracy                           0.91      2947
-   macro avg       0.91      0.91      0.91      2947
+   macro avg       0.92      0.91      0.91      2947
 weighted avg       0.91      0.91      0.91      2947
